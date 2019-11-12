@@ -2,7 +2,7 @@
 layout: post
 title:  "Using caps lock as CMD and CTRL in macOS, selectively"
 date:   2019-01-21 12:00:00 -0800
-categories: karabiner keyboard macos terminal
+categories: macos 
 ---
 One of the larger reasons I find myself switching between OSes, and away from macOS in particular, is its inability to play nice with non-standard keyboard layouts. My [HHKB](https://en.wikipedia.org/wiki/Happy_Hacking_Keyboard) has a Control key where you'd expect to find a Caps Lock key (which is great, by the way), so using a standard Mac keyboard on my laptop is jarring. I talked about this in a [previous blog post](/posts/iterm-and-caps-lock-ctrl), where I used iTerm and some shortcut trickery to send ctrl-codes to my terminal whenever it received command key shortcuts. This works but it's pretty messy.
 

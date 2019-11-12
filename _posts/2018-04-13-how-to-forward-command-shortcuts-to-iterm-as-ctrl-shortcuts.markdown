@@ -2,7 +2,7 @@
 layout: post
 title:  "How to forward CMD shortcuts to iTerm as CTRL shortcuts"
 date:   2018-04-13 12:00:00 -0800
-categories: macos keyboard iterm
+categories: macos 
 ---
 After trying a couple different kinds of keyboards, I eventually settled on a [Happy Hacking Keyboard](https://en.wikipedia.org/wiki/Happy_Hacking_Keyboard). The keyboard is really a topic for another post - the reason I mention it is the placement of the `ctrl` key. At first glance, it's gone. Where's it gone to? It's replaced the bastard child of keyboard keys, Caps Lock. I had made the switch to caps lock control around a year before I picked up my HHKB, so it was no problem using it, mostly.
 

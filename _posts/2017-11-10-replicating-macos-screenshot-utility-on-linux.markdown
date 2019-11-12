@@ -2,7 +2,7 @@
 layout: post
 title:  "Replicating macOS's screenshot utility on Linux"
 date:   2017-11-10 12:00:00 -0800
-categories: linux macos
+categories: linux 
 ---
 I am *really* picky about my operating systems, and often find myself in a situation where I'm not satisfied with using Linux, macOS, or Windows. This is mostly my own fault, and the subject for a different blog post entirely. Development on my laptop (a 2015 Macbook Air running macOS Sierra) and development on my home desktop (Ubuntu 16.04 with [i3wm](https://i3wm.org/)) are two different beasts. Generally, I prefer the setup I have on my desktop, but screenshots are one front where macOS [blows Linux out of the water](https://support.apple.com/en-us/HT201361). A user on AskUbuntu [posted](https://askubuntu.com/a/352276/540640) about just this, I've made some small modifications and would like to share.
 

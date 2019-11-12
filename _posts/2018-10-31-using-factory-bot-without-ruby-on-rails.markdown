@@ -2,7 +2,7 @@
 layout: post
 title:  "Using factory_bot without Ruby on Rails"
 date:   2018-10-31 12:00:00 -0800
-categories: rails ruby factory_bot
+categories: ruby 
 ---
 # Preface about factory\_bot
 In my work on Ruby on Rails projects, I'm a fan of using Thoughtbot's [factory\_bot](https://github.com/thoughtbot/factory_bot) as a replacement for the built-in concept of fixtures. If you're unfamiliar, the premise is pretty simple. Rails' fixtures are nice, but are really limited, and tend to hamstring developers into writing unmaintainable tests. A fixture looks something like this:

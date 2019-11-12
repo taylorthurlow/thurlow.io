@@ -2,7 +2,7 @@
 layout: post
 title:  "Ruby on Rails: DRY controllers with responders gem"
 date:   2017-10-26 12:00:00 -0800
-categories: rails ruby
+categories: ruby
 ---
 Rails' ability to generate scaffolding is nice, but the way the resulting controllers are structured seems to abandon some part of the 'thin controller, fat model' ideology (that said, fat models are still not great). Generating a scaffold for a `User` model gives us a controller which handles action responses in this way:
 

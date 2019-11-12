@@ -2,7 +2,7 @@
 layout: post
 title:  "Using Webpacker with Rails on TravisCI"
 date:   2018-10-19 12:00:00 -0800
-categories: rails ruby travisci webpacker
+categories: ruby 
 ---
 I recently finished reworking my site's CSS using [Tailwind CSS](https://tailwindcss.com). Everything went smoothly locally - especially cool since I have no prior experience using Webpacker, or even Yarn. Tests were passing with no issues. After pushing my finished changes, TravisCI immediately broke - complaining about something wrong with Webpacker:
 

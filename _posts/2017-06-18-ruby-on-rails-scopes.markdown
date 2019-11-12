@@ -2,7 +2,7 @@
 layout: post
 title:  "Ruby on Rails: Scopes"
 date:   2017-06-18 12:00:00 -0800
-categories: rails ruby
+categories: ruby
 ---
 Scopes are super useful - and easy to write. Rails 4 and newer make it really easy. Rails 3 and older do have scopes, but I won't cover them here.  Let's say I have a `timelog` model which, among other things, has a `start_time` and `end_time`. If I wanted to scope the hard way, using the usual syntax, it would look something like:
 
