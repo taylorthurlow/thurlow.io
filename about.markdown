@@ -3,16 +3,13 @@ layout: page
 title: About
 permalink: /about/
 ---
+<div style="text-align: center; margin-bottom: 3em;">
+  <img src="/assets/images/headshot.jpg" style="max-width: 20em"/>
+</div>
 
-This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](https://jekyllrb.com/)
+Hi, I'm Taylor!
 
-You can find the source code for Minima at GitHub:
-[jekyll][jekyll-organization] /
-[minima](https://github.com/jekyll/minima)
+I'm a software engineer from (and living in) California. I specialize in backend web technologies, particularly focusing on Ruby and Ruby on Rails.
 
-You can find the source code for Jekyll at GitHub:
-[jekyll][jekyll-organization] /
-[jekyll](https://github.com/jekyll/jekyll)
+Currently I'm working for [Bay Photo](https://bayphoto.com/), a photo and printing company based in the Santa Cruz area.
 
-
-[jekyll-organization]: https://github.com/jekyll
