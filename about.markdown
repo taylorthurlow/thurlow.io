@@ -7,7 +7,7 @@ permalink: /about/
   <img src="/assets/images/headshot.jpg" style="max-width: 20em"/>
 </div>
 
-Hi, I'm Taylor!
+Hi, I'm Taylor Thurlow!
 
 I'm a software engineer from (and living in) California. I specialize in backend web technologies, particularly focusing on Ruby and Ruby on Rails.
 
