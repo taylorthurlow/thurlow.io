@@ -21,5 +21,6 @@ basic steps for doing the install properly
 * add the above lines to your bashrc/zshrc/bashprofile/zprofile
   * the first will fix most compilation issues, I use the 2nd one to fix `mysql2` gem installation
 * if you build ruby from scratch or use any utility which does so (like `ruby-build`) then you'll need to uninstall and rebuild all ruby versions
+  * Might need `export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl)"`, if rbenv doesn't automatically use homebrew installed version (not sure why it couldn't find it? `Downloading openssl-1.1.1d.tar.gz...`
   * with rbenv, do `rbenv uninstall VERSION` for all versions, and re-run `rbenv install VERSION` for all versions
 
