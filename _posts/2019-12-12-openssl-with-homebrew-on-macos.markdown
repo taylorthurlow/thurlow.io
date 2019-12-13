@@ -42,7 +42,7 @@ And now we can install OpenSSL again:
 brew install openssl
 ```
 
-It's going to depend on when you're following this guide, but the `openssl` package in Homebrew is likely an [alias](https://en.wikipedia.org/wiki/Aliasing_(computing)) for an OpenSSL package with a specific version number. Currently, `openssl` is a package alias for the `openssl@1.1` package. This is totally fine, but you'll need to know what the package name is (it might not be `openssl@1.1` if it's been updated since I wrote this).
+It's going to depend on when you're following this guide, but the `openssl` package in Homebrew is likely an [alias](https://en.wikipedia.org/wiki/Aliasing_(computing)) for an OpenSSL package with a specific version number. Currently, `openssl` is an alias for the `openssl@1.1` package. This is totally fine, but you'll need to know what the package name is (it might not be `openssl@1.1` if it's been updated since I wrote this).
 
 You can check the real package name with `brew info openssl | head -n 1`. When I run this command, I get:
 
@@ -80,7 +80,5 @@ Because this takes place at the time you install Ruby, this means that you'll ne
 ## Installing SSL certificates
 
 Because we are now using a separate OpenSSL installation, we can't install certificates through `Keychain Access.app`. Instead, add your certificates to `/usr/local/etc/openssl@1.1/certs`, substituting `@1.1` for your version number, as before. Then run `c_rehash` in any terminal. You should see a confirmation message that the aforementioned path was scanned for certificates. This process should add a new symlink to the certs directory, something like `85cf5865.0`. This means the rehash worked properly.
-
----
 
 Happy hacking!
