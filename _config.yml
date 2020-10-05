@@ -20,7 +20,7 @@
 
 title: thurlow.io
 author: Taylor Thurlow
-email: taylorthurlow@me.com
+email: taylorthurlow@me.com # seems to redirect to an @hey.com address that does not exist
 description: >- # this means to ignore newlines until "baseurl:"
   Hi, I'm Taylor Thurlow. I'm a software engineer and Rubyist from California.
 baseurl: "" # the subpath of your site, e.g. /blog
