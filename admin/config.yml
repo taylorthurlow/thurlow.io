@@ -9,6 +9,7 @@ collections:
     label: "Blog"
     folder: "_posts/"
     create: true
+    publish_mode: editorial_workflow
     editor:
       preview: false
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
