@@ -6,7 +6,7 @@ date: 2019-01-21 12:00:00 -0800
 ---
 One of the larger reasons I find myself switching between OSes, and away from macOS in particular, is its inability to play nice with non-standard keyboard layouts. My [HHKB](https://en.wikipedia.org/wiki/Happy_Hacking_Keyboard) has a Control key where you'd expect to find a Caps Lock key (which is great, by the way), so using a standard Mac keyboard on my laptop is jarring. I talked about this in a [previous blog post](/posts/iterm-and-caps-lock-ctrl), where I used iTerm and some shortcut trickery to send ctrl-codes to my terminal whenever it received command key shortcuts. This works but it's pretty messy.
 
-\## In Comes Karabiner
+## In Comes Karabiner
 [Karabiner](https://pqrs.org/osx/karabiner/) (or more specifically, Karabiner-Elements, is a macOS application which emulates a keyboard device, and allows deep customization. Through Karabiner's "complex modifications" section, we can write a little configuration file which achieves the following goals:
 
 * Change Caps Lock to Command in all applications except your terminal application
@@ -80,7 +80,7 @@ Once you've installed Karabiner, open it and run it. Now you can open your text 
 }
 ```
 
-\## Tweaking the JSON
+## Tweaking the JSON
 There are only a couple things you might need to change for your use case. Firstly, because I'm using a terminal called kitty, you'll see that in the description and title sections. Change those as you like. The other modification necessary is changing the bundle identifier that Karabiner uses to identify which window we are talking about. To do this, head over to your terminal and execute the following command, substituting the application path for the application path of your terminal:
 
 ```bash
