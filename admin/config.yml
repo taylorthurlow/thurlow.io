@@ -4,12 +4,12 @@ backend:
   name: git-gateway
   branch: master # Branch to update (optional; defaults to master)
 media_folder: "assets/uploads"
+publish_mode: editorial_workflow
 collections:
   - name: "blog"
     label: "Blog"
     folder: "_posts/"
     create: true
-    publish_mode: editorial_workflow
     editor:
       preview: false
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
