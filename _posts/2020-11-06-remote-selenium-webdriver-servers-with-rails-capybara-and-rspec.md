@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Remote Selenium WebDriver servers with Rails, Capybara, RSpec, and Chrome
-categories: rails,ruby
+categories: ruby
 date: 2020-11-05 16:02:22 -08:00
 ---
 At work, I've been spending some time getting our Rails projects deployed on new Kubernetes infrastructure, and we're taking the opportunity to fix some problems with our current CI pipeline - the biggest of which is a lack of tests. The first app we're deploying is a greenfield (yet to be used in production) Rails app which uses RSpec and includes Rails 5.1/6-style "system specs" which use Capybara to drive a web browser.
