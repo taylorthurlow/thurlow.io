@@ -76,7 +76,6 @@ end
 Capybara.register_driver :remote_selenium_headless do |app|
   options = Selenium::WebDriver::Chrome::Options.new
   options.add_argument("--headless")
-  options.add_argument("--disable-gpu")
   options.add_argument("--window-size=1400,1400")
   options.add_argument("--no-sandbox")
   options.add_argument("--disable-dev-shm-usage")
@@ -99,7 +98,6 @@ end
 Capybara.register_driver :local_selenium_headless do |app|
   options = Selenium::WebDriver::Chrome::Options.new
   options.add_argument("--headless")
-  options.add_argument("--disable-gpu")
   options.add_argument("--window-size=1400,1400")
 
   Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
@@ -141,3 +139,34 @@ So we've created four drivers: `remote_selenium_headless`, `remote_selenium`, `l
 * [`--headless`](https://peter.sh/experiments/chromium-command-line-switches/#headless) - Enable Chrome's headless mode which will run Chrome without a UI or display server dependencies.
 
 Note: Some guides may suggest using the `--disable-gpu` flag, but [this is no longer necessary on any operating system](https://bugs.chromium.org/p/chromium/issues/detail?id=737678).
+
+You'll also notice that the `:url` key is provided when constructing the remote drivers, but not for the local ones.
+
+Now that we've created the drivers, we need to configure RSpec to use the correct driver in the correct scenario. Using the `before(:each)` RSpec hook, we can run some code before each spec example of type `:system`. Specs' types are determined either by the subdirectory they are contained within under the `spec` directory (only when RSpec's `infer_spec_type_from_file_location` option is enabled), or directly in the spec file itself:
+
+```ruby
+RSpec.describe "Sign Up", type: :system do
+  # ...
+end
+```
+
+System specs fall into two categories: specs that require JavaScript, and those that don't. System specs that require JavaScript are denoted with the `js: true` tag:
+
+```ruby
+RSpec.describe "Sign Up", type: :system do
+  it "signs up a new user", js: true do
+    # ...
+  end
+end
+
+If your system spec can avoid using JavaScript, then you should do so. System specs that don't require JavaScript are run using the `:rack_test` driver instead of Selenium. The advantage there is that they run _much_ faster.
+
+Our `before(:each)` block begins with a check if our current `example` (the current spec being run) has this `js` flag set to `true`. If it does, this is our signal to use one of our four Selenium drivers. If not, then we can fall back to `:rack_test`.
+
+The assignment conditional to the `driver` variable basically constructs a symbol name which corresponds to the driver we want to use. We check for the presence of a value in the `SELENIUM_HOST` environment variable, and if there is one, we assume we want to connect to a remote Selenium server, so we pick `remote` as the prefix. We can then tack on a `_headless` suffix by default, skipping it if the `DISABLE_HEADLESS` environment variable has a value (not true/false, mind you).
+
+Now that we've generated the name of the driver we want to use, we can pass that to `driven_by`. It's worth noting that `driven_by` is not a Capybara method, but rather a method provided by Rails. We can pass a Capybara driver name to it if we want, though.
+
+The next thing we do is determine the `selenium_app_host` by checking the value of the `SELENIUM_APP_HOST` environment variable, falling back to a little Ruby which obtains the IP address of the machine currently running the code. This is important because our Selenium server needs to know where the Rails app itself is being run - the same server that is running this Ruby code. Typically you won't need to set `SELENIUM_APP_HOST`, but it's there in case the automatic-IP-determining code doesn't work properly.
+
+Now that we have the IP/host of the app server, we configure Capybara to use that IP and port 3000. We can construct our `app_host` using the same configuration values we just set.
