@@ -10,7 +10,7 @@ Getting JavaScript-enabled system specs working when you run the tests locally i
 
 My goal with this post is to explain how to set up your specs so they run locally when you're developing locally, but also on an arbitrary Selenium server when you desire that (like during CI). I'll be using Chrome as the driver, but configuration should be minimally different for other browsers.
 
-# Selenium WebDriver server setup
+## Selenium WebDriver server setup
 
 Because we're using Docker to set up this testing CI environment, we can use [docker-selenium](https://github.com/SeleniumHQ/docker-selenium), the official Selenium Docker image repository. Because my local machine isn't the CI server, I'll need to set up a Selenium server straight from the Docker image:
 
@@ -20,7 +20,7 @@ $> docker run --name=selenium -p '4444:4444/tcp' -p '5900:5900/tcp' 'selenium/st
 
 This command will download the container and run it with two ports open - `4444`  is the Selenium WebDriver server, and `5900` is a VNC server which you can use to visually inspect the browser if you want. This is why I used the `standalone-chrome-debug` selenium image instead of the `standalone-chrome` image - the non-debug version doesn't come with a VNC server. In production, you can use the non-debug version. You can use a VNC client to open `vnc://localhost:5900`, using the password `secret`. If you're on macOS, you can open Finder, press `CMD+k`, and paste in the above URL directly - macOS has a built-in VNC client.
 
-# Configuring Rails
+## Configuring Rails
 
 You'll need a few gems, some or all of which you may already have:
 
@@ -31,7 +31,7 @@ You'll need a few gems, some or all of which you may already have:
 
 If you use Minitest instead of RSpec, things should be largely the same, but you're on your own as far as getting things working. Differences between this guide and the same process for Minitest should be mostly superficial.
 
-## Configuring the rails_helper
+### Configuring the rails_helper
 
 Following the `require "rspec/rails"` statement in `rails_helper.rb`, add the following requires:
 
@@ -52,7 +52,7 @@ Dir[Rails.root.join("spec", "support", "**", "*.rb")].sort.each { |f| require f 
 
 You can omit the complicated `spec/support` directory require logic, but I find it generally useful. We'll be creating `spec/support/capybara.rb` shortly, so if you don't want to do it the way I did, then make sure you require that file.
 
-## Configuring Capybara
+### Configuring Capybara
 
 Create `spec/support/capybara.rb`. You can treat this as a sort of an RSpec initializer for Capybara. What follows is the entire contents of the file that you should paste in. I will explain each part afterwards.
 
@@ -201,7 +201,7 @@ The next thing we do is determine the `selenium_app_host` by checking the value 
 
 Now that we have the IP/host of the app server, we configure Capybara to use that IP and port 3000. We can construct our `app_host` using the same configuration values we just set.
 
-## If you use WebMock
+### If you use WebMock
 
 If you use [WebMock](https://github.com/bblimke/webmock) to disable network connections when running tests, you might find that Selenium, Capybara, and Chromedriver really like to connect to each other, and WebMock isn't having any of that. Immediately following the `Capybara.app_host` assignment above, I've configured this:
 
@@ -219,7 +219,7 @@ WebMock.disable_net_connect!(allow: allowed_webmock_addresses)
 
 This will allow the `webdrivers` gem to fetch Chromedriver itself, and it will allow communication between Capybara and the Selenium server.
 
-# Running our specs
+## Running our specs
 
 With what we've set up, we now have four different ways of running our specs:
 
