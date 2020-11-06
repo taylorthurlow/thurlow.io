@@ -181,7 +181,7 @@ end
 
 Our `before(:each)` block begins with a check if our current `example` (the current spec being run) has this `js` flag set to `true`. If it does, this is our signal to use one of our four Selenium drivers. If not, then we can fall back to `:rack_test`.
 
-The conditional assignment to the `driver` variable basically constructs a symbol name which corresponds to the driver we want to use. We check for the presence of a value in the `SELENIUM_HOST` environment variable, and if there is one, we assume we want to connect to a remote Selenium server, so we pick `remote` as the prefix. We can then tack on a `_headless` suffix by default, skipping it if the `DISABLE_HEADLESS` environment variable has a value (not true/false, mind you).
+The conditional assignment to the `driver` variable constructs a symbol name which corresponds to the driver we need to use. We check for the presence of a value in the `SELENIUM_HOST` environment variable, and if there is one, we assume we want to connect to a remote Selenium server, so we pick `remote` as the prefix. We can then tack on a `_headless` suffix by default, skipping it if the `DISABLE_HEADLESS` environment variable has a value (not true/false, mind you).
 
 Now that we've generated the name of the driver we want to use, we can pass that to `driven_by`. It's worth noting that `driven_by` is not a Capybara method, but rather a method provided by Rails. We can pass a Capybara driver name to it if we want, though.
 
@@ -215,7 +215,7 @@ allowed_webmock_addresses = [
 allowed_webmock_addresses << ENV["SELENIUM_HOST"] if ENV["SELENIUM_HOST"].present?
 
 WebMock.disable_net_connect!(allow: allowed_webmock_addresses)
-``
+```
 
 This will allow the `webdrivers` gem to fetch Chromedriver itself, and it will allow communication between Capybara and the Selenium server.
 
