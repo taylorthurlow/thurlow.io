@@ -138,7 +138,7 @@ So we've created four drivers: `remote_selenium_headless`, `remote_selenium`, `l
 * [`--disable-dev-shm-usage`](https://peter.sh/experiments/chromium-command-line-switches/#disable-dev-shm-usage) - The `/dev/shm` shared memory partition is too small on many VM environments, which will cause Chrome to [fail or crash](http://crbug.com/715363). You might be able to get away with omitting this option, or mapping the `/dev/shm` path to the Docker host, but I haven't bothered with it. If your Selenium performance is suffering, it may be worth investigating this further.
 * [`--headless`](https://peter.sh/experiments/chromium-command-line-switches/#headless) - Enable Chrome's headless mode which will run Chrome without a UI or display server dependencies.
 
-Note: Some guides may suggest using the `--disable-gpu` flag, but [this is no longer necessary on any operating system](https://bugs.chromium.org/p/chromium/issues/detail?id=737678).
+*Note:* Some guides may suggest using the `--disable-gpu` flag, but [this is no longer necessary on any operating system](https://bugs.chromium.org/p/chromium/issues/detail?id=737678).
 
 You'll also notice that the `:url` key is provided when constructing the remote drivers, but not for the local ones.
 
@@ -158,6 +158,7 @@ RSpec.describe "Sign Up", type: :system do
     # ...
   end
 end
+```
 
 If your system spec can avoid using JavaScript, then you should do so. System specs that don't require JavaScript are run using the `:rack_test` driver instead of Selenium. The advantage there is that they run _much_ faster.
 
@@ -170,3 +171,23 @@ Now that we've generated the name of the driver we want to use, we can pass that
 The next thing we do is determine the `selenium_app_host` by checking the value of the `SELENIUM_APP_HOST` environment variable, falling back to a little Ruby which obtains the IP address of the machine currently running the code. This is important because our Selenium server needs to know where the Rails app itself is being run - the same server that is running this Ruby code. Typically you won't need to set `SELENIUM_APP_HOST`, but it's there in case the automatic-IP-determining code doesn't work properly.
 
 Now that we have the IP/host of the app server, we configure Capybara to use that IP and port 3000. We can construct our `app_host` using the same configuration values we just set.
+
+# Running our specs
+
+With what we've set up, we now have four different ways of running our specs:
+
+```bash
+# Locally, with a headless Chrome instance
+bundle exec rspec
+
+# Locally, with a visible Chrome window that will steal focus when it opens
+DISABLE_HEADLESS=true bundle exec rspec
+
+# Remotely, with a headless (invisible) Chrome instance
+SELENIUM_HOST="http://localhost" bundle exec rspec
+
+# Remotely, with a visible Chrome window
+SELENIUM_HOST="http://localhost" DISABLE_HEADLESS=true bundle exec rspec
+```
+
+The value of `SELENIUM_HOST` can be any server, though it does assume that the Selenium server is running on port `4444`.
