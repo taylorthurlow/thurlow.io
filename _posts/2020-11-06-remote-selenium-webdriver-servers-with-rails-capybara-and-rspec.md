@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Remote Selenium WebDriver servers with Rails, Capybara, and RSpec
+title: Remote Selenium WebDriver servers with Rails, Capybara, RSpec, and Chrome
 categories: rails,ruby
 date: 2020-11-05 16:02:22 -08:00
 ---
