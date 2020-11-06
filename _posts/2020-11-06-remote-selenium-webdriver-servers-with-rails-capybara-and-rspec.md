@@ -8,7 +8,7 @@ At work, I'm working on getting our Rails projects deployed on new Kubernetes in
 
 Getting JavaScript-enabled system specs working when you run the tests locally isn't too bad - mostly just install a few gems, configure them per their respective READMEs, and off you go. This was the case with this new Rails app, but seeing as we wanted tests to be fully supported in our new CI pipeline, we needed to figure out how to deal with system specs, and by extension, Selenium.
 
-My goal with this post is to explain how to set up your specs so they run locally when you're developing locally, but on an arbitrary Selenium server when you desire that (like during CI).
+My goal with this post is to explain how to set up your specs so they run locally when you're developing locally, but on an arbitrary Selenium server when you desire that (like during CI). I'll be using Chrome as the driver, but configuration should be minimally different for other browsers.
 
 # Selenium WebDriver server setup
 
@@ -18,7 +18,7 @@ Because we're using Docker to set up this testing CI environment, we can use [do
 $> docker run --name=selenium -p '4444:4444/tcp' -p '5900:5900/tcp' 'selenium/standalone-chrome-debug'
 ```
 
-This command will download the container and run it with two ports open - `4444`  is the Selenium WebDriver server, and `5900` is a VNC server which you can use to visually inspect the browser if you want. This is why I used the `standalone-chrome-debug` selenium image instead of the `standalone-chrome` image - the non-debug version doesn't come with a VNC viewer. In production, you can use the non-debug version. You can use a VNC client to open `vnc://localhost:5900`, using the password `secret`.
+This command will download the container and run it with two ports open - `4444`  is the Selenium WebDriver server, and `5900` is a VNC server which you can use to visually inspect the browser if you want. This is why I used the `standalone-chrome-debug` selenium image instead of the `standalone-chrome` image - the non-debug version doesn't come with a VNC server. In production, you can use the non-debug version. You can use a VNC client to open `vnc://localhost:5900`, using the password `secret`. If you're on macOS, you can open Finder, press `CMD+k`, and paste in the above URL directly - macOS has a build in VNC client.
 
 # Configuring Rails
 
@@ -26,7 +26,116 @@ You'll need a few gems, some or all of which you may already have:
 
 * [Capybara](https://github.com/teamcapybara/capybara), a DSL for testing frameworks used to manipulate web drivers like Selenium (`v3.33.0` at the time of writing)
 * [selenium-webdriver](https://github.com/SeleniumHQ/selenium/tree/trunk/rb), the Ruby bindings for controlling Selenium WebDriver (`v3.142.7` at the time of writing)
+* [webdrivers](https://github.com/titusfortner/webdrivers), an easy way to automatically install, use, and update web drivers for popular browsers (`v4.4.1` at the time of writing)
 * [rspec-rails](https://github.com/rspec/rspec-rails), my Ruby testing library of choice (`v4.0.1` at the time of writing)
 
 If you use Minitest instead of RSpec, things should be largely the same, but you're on your own as far as getting things working. Differences between this guide and the same process for Minitest should be mostly superficial.
 
+## `rails_helper.rb`
+
+Following the `require "rspec/rails"` statement in `rails_helper.rb`, add the following requires:
+
+```ruby
+# spec/rails_helper.rb
+
+# ...
+
+require "rspec/rails"
+
+require "capybara/rails"
+require "capybara/rspec"
+
+Dir[Rails.root.join("spec", "support", "**", "*.rb")].sort.each { |f| require f }
+
+# ...
+```
+
+You can omit the complicated `spec/support` directory require logic, but I find it generally useful. We'll be creating `spec/support/capybara.rb` shortly, so if you don't want to do it the way I did, then make sure you require that file.
+
+Create `spec/support/capybara.rb`. You can treat this as a sort of an RSpec initializer for Capybara. What follows is the entire contents of the file that you should paste in. I will explain each part afterwards.
+
+```ruby
+# spec/support/capybara.rb
+
+Capybara.register_driver :remote_selenium do |app|
+  options = Selenium::WebDriver::Chrome::Options.new
+  options.add_argument("--window-size=1400,1400")
+  options.add_argument("--no-sandbox")
+  options.add_argument("--disable-dev-shm-usage")
+
+  Capybara::Selenium::Driver.new(
+    app,
+    browser: :chrome,
+    url: "http://#{ENV["SELENIUM_HOST"]}:4444/wd/hub",
+    options: options,
+  )
+end
+
+Capybara.register_driver :remote_selenium_headless do |app|
+  options = Selenium::WebDriver::Chrome::Options.new
+  options.add_argument("--headless")
+  options.add_argument("--disable-gpu")
+  options.add_argument("--window-size=1400,1400")
+  options.add_argument("--no-sandbox")
+  options.add_argument("--disable-dev-shm-usage")
+
+  Capybara::Selenium::Driver.new(
+    app,
+    browser: :chrome,
+    url: "http://#{ENV["SELENIUM_HOST"]}:4444/wd/hub",
+    options: options,
+  )
+end
+
+Capybara.register_driver :local_selenium do |app|
+  options = Selenium::WebDriver::Chrome::Options.new
+  options.add_argument("--window-size=1400,1400")
+
+  Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
+end
+
+Capybara.register_driver :local_selenium_headless do |app|
+  options = Selenium::WebDriver::Chrome::Options.new
+  options.add_argument("--headless")
+  options.add_argument("--disable-gpu")
+  options.add_argument("--window-size=1400,1400")
+
+  Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
+end
+
+RSpec.configure do |config|
+  config.before(:each, type: :system) do |example|
+    driver = if example.metadata[:js]
+        locality = ENV["SELENIUM_HOST"].present? ? :remote : :local
+        headless = "_headless" if ENV["DISABLE_HEADLESS"].blank?
+
+        "#{locality}_selenium#{headless}".to_sym
+      else
+        :rack_test
+      end
+
+    driven_by driver
+
+    selenium_app_host = ENV.fetch("SELENIUM_APP_HOST") do
+      Socket.ip_address_list
+            .find(&:ipv4_private?)
+            .ip_address
+    end
+
+    Capybara.server_host = selenium_app_host
+    Capybara.server_port = 3000
+    Capybara.app_host = "http://#{Capybara.server_host}:#{Capybara.server_port}"
+  end
+end
+```
+
+The first part of this file involves creating four different custom Capybara drivers to run our specs. We have four because we need to have a separately configured driver for local runs and remote runs, as well as a separately configured driver for "headless" runs, where the browser runs invisibly, instead of actually opening a desktop window and stealing focus. It's usually annoying, but sometimes it's valuable to be able to see Selenium manipulate the browser yourself.
+
+So we've created four drivers: `remote_selenium_headless`, `remote_selenium`, `local_selenium_headless`, and `local_selenium`. Each needs to be configured slightly differently. The `Selenium::WebDriver::Chrome::Options` object represents command-line flags to the chromedriver:
+
+* [`--window-size=1400,1400`](https://peter.sh/experiments/chromium-command-line-switches/#window-size) - Set the window size to 1400x1400 pixels. This is a reasonable size without being too large, but you can set it to whatever you like. This mostly impacts the size of debugging screenshots, but some tests may fail if you ask Capybara to click on an element which is not currently visible on the page.
+* [`--no-sandbox`](https://peter.sh/experiments/chromium-command-line-switches/#no-sandbox) - Disables Chrome's [sandbox](https://chromium.googlesource.com/chromium/src/+/master/docs/design/sandbox.md) functionality, because it has an issue with Docker version `1.10.0` and later. You may see a warning in the Docker container logs about "security and stability" suffering, which doesn't really matter in this case.
+* [`--disable-dev-shm-usage`](https://peter.sh/experiments/chromium-command-line-switches/#disable-dev-shm-usage) - The `/dev/shm` shared memory partition is too small on many VM environments, which will cause Chrome to [fail or crash](http://crbug.com/715363). You might be able to get away with omitting this option, or mapping the `/dev/shm` path to the Docker host, but I haven't bothered with it. If your Selenium performance is suffering, it may be worth investigating this further.
+* [`--headless`](https://peter.sh/experiments/chromium-command-line-switches/#headless) - Enable Chrome's headless mode which will run Chrome without a UI or display server dependencies.
+
+Note: Some guides may suggest using the `--disable-gpu` flag, but [this is no longer necessary on any operating system](https://bugs.chromium.org/p/chromium/issues/detail?id=737678).
