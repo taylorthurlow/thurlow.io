@@ -238,3 +238,9 @@ SELENIUM_HOST="http://localhost" DISABLE_HEADLESS=true bundle exec rspec
 ```
 
 The value of `SELENIUM_HOST` can be any server, though it does assume that the Selenium server is running on port `4444`. You can always tweak the driver creation part of the code above to not include the port number if that's what you want, but remember to leave the `/wd/hub` suffix on there.
+
+-----
+
+And that's it! If you're using Selenium in CI, just set up the server however you see fit, make sure it's network-accessible from your Rails server, and set `SELENIUM_HOST` to the hostname or IP of the selenium server. Everything else will be handled automatically.
+
+Happy hacking!
