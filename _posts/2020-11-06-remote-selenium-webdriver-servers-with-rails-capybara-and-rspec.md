@@ -8,7 +8,7 @@ At work, I've been spending some time getting our Rails projects deployed on new
 
 Getting JavaScript-enabled system specs working when you run the tests locally isn't too bad - mostly just install a few gems, configure them per their respective READMEs, and off you go. This was the case with this new Rails app, but seeing as we wanted tests to be fully supported in our new CI pipeline, we needed to figure out how to deal with system specs, and by extension, Selenium.
 
-My goal with this post is to explain how to set up your specs so they run locally when you're developing locally, but on an arbitrary Selenium server when you desire that (like during CI). I'll be using Chrome as the driver, but configuration should be minimally different for other browsers.
+My goal with this post is to explain how to set up your specs so they run locally when you're developing locally, but also on an arbitrary Selenium server when you desire that (like during CI). I'll be using Chrome as the driver, but configuration should be minimally different for other browsers.
 
 # Selenium WebDriver server setup
 
@@ -18,7 +18,7 @@ Because we're using Docker to set up this testing CI environment, we can use [do
 $> docker run --name=selenium -p '4444:4444/tcp' -p '5900:5900/tcp' 'selenium/standalone-chrome-debug'
 ```
 
-This command will download the container and run it with two ports open - `4444`  is the Selenium WebDriver server, and `5900` is a VNC server which you can use to visually inspect the browser if you want. This is why I used the `standalone-chrome-debug` selenium image instead of the `standalone-chrome` image - the non-debug version doesn't come with a VNC server. In production, you can use the non-debug version. You can use a VNC client to open `vnc://localhost:5900`, using the password `secret`. If you're on macOS, you can open Finder, press `CMD+k`, and paste in the above URL directly - macOS has a build in VNC client.
+This command will download the container and run it with two ports open - `4444`  is the Selenium WebDriver server, and `5900` is a VNC server which you can use to visually inspect the browser if you want. This is why I used the `standalone-chrome-debug` selenium image instead of the `standalone-chrome` image - the non-debug version doesn't come with a VNC server. In production, you can use the non-debug version. You can use a VNC client to open `vnc://localhost:5900`, using the password `secret`. If you're on macOS, you can open Finder, press `CMD+k`, and paste in the above URL directly - macOS has a built-in VNC client.
 
 # Configuring Rails
 
