@@ -162,15 +162,62 @@ end
 
 If your system spec can avoid using JavaScript, then you should do so. System specs that don't require JavaScript are run using the `:rack_test` driver instead of Selenium. The advantage there is that they run _much_ faster.
 
+```ruby
+config.before(:each, type: :system) do |example|
+  driver = if example.metadata[:js]
+      locality = ENV["SELENIUM_HOST"].present? ? :remote : :local
+      headless = "_headless" if ENV["DISABLE_HEADLESS"].blank?
+
+      "#{locality}_selenium#{headless}".to_sym
+    else
+      :rack_test
+    end
+
+  driven_by driver
+
+  # ...
+end
+```
+
 Our `before(:each)` block begins with a check if our current `example` (the current spec being run) has this `js` flag set to `true`. If it does, this is our signal to use one of our four Selenium drivers. If not, then we can fall back to `:rack_test`.
 
 The assignment conditional to the `driver` variable basically constructs a symbol name which corresponds to the driver we want to use. We check for the presence of a value in the `SELENIUM_HOST` environment variable, and if there is one, we assume we want to connect to a remote Selenium server, so we pick `remote` as the prefix. We can then tack on a `_headless` suffix by default, skipping it if the `DISABLE_HEADLESS` environment variable has a value (not true/false, mind you).
 
 Now that we've generated the name of the driver we want to use, we can pass that to `driven_by`. It's worth noting that `driven_by` is not a Capybara method, but rather a method provided by Rails. We can pass a Capybara driver name to it if we want, though.
 
+```ruby
+selenium_app_host = ENV.fetch("SELENIUM_APP_HOST") do
+  Socket.ip_address_list
+        .find(&:ipv4_private?)
+        .ip_address
+end
+
+Capybara.server_host = selenium_app_host
+Capybara.server_port = 3000
+Capybara.app_host = "http://#{Capybara.server_host}:#{Capybara.server_port}"
+```
+
 The next thing we do is determine the `selenium_app_host` by checking the value of the `SELENIUM_APP_HOST` environment variable, falling back to a little Ruby which obtains the IP address of the machine currently running the code. This is important because our Selenium server needs to know where the Rails app itself is being run - the same server that is running this Ruby code. Typically you won't need to set `SELENIUM_APP_HOST`, but it's there in case the automatic-IP-determining code doesn't work properly.
 
 Now that we have the IP/host of the app server, we configure Capybara to use that IP and port 3000. We can construct our `app_host` using the same configuration values we just set.
+
+## If you use WebMock
+
+If you use [WebMock](https://github.com/bblimke/webmock) to disable network connections when running tests, you might find that Selenium, Capybara, and Chromedriver really like to connect to each other, and WebMock isn't having any of that. Immediately following the `Capybara.app_host` assignment above, I've configured this:
+
+```ruby
+allowed_webmock_addresses = [
+  "#{selenium_app_host}:#{Capybara.server_port}",
+  "127.0.0.1:9515", # chromedriver
+  "localhost:9515", # chromedriver
+]
+
+allowed_webmock_addresses << ENV["SELENIUM_HOST"] if ENV["SELENIUM_HOST"].present?
+
+WebMock.disable_net_connect!(allow: allowed_webmock_addresses)
+``
+
+This will allow the `webdrivers` gem to fetch Chromedriver itself, and it will allow communication between Capybara and the Selenium server.
 
 # Running our specs
 
@@ -190,4 +237,4 @@ SELENIUM_HOST="http://localhost" bundle exec rspec
 SELENIUM_HOST="http://localhost" DISABLE_HEADLESS=true bundle exec rspec
 ```
 
-The value of `SELENIUM_HOST` can be any server, though it does assume that the Selenium server is running on port `4444`.
+The value of `SELENIUM_HOST` can be any server, though it does assume that the Selenium server is running on port `4444`. You can always tweak the driver creation part of the code above to not include the port number if that's what you want, but remember to leave the `/wd/hub` suffix on there.
