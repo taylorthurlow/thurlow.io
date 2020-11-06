@@ -4,7 +4,7 @@ title: Remote Selenium WebDriver servers with Rails, Capybara, and RSpec
 categories: rails,ruby
 date: 2020-11-05 16:02:22 -08:00
 ---
-At work, I'm working on getting our Rails projects deployed on new Kubernetes infrastructure, and we're taking the opportunity to fix some problems with our current CI pipeline - the biggest of which is a lack of tests. The first app we're deploying is a greenfield (yet to be used in production) Rails app which uses RSpec and includes Rails 5.1/6-style "system specs" which use Capybara to drive a web browser.
+At work, I've been spending some time getting our Rails projects deployed on new Kubernetes infrastructure, and we're taking the opportunity to fix some problems with our current CI pipeline - the biggest of which is a lack of tests. The first app we're deploying is a greenfield (yet to be used in production) Rails app which uses RSpec and includes Rails 5.1/6-style "system specs" which use Capybara to drive a web browser.
 
 Getting JavaScript-enabled system specs working when you run the tests locally isn't too bad - mostly just install a few gems, configure them per their respective READMEs, and off you go. This was the case with this new Rails app, but seeing as we wanted tests to be fully supported in our new CI pipeline, we needed to figure out how to deal with system specs, and by extension, Selenium.
 
@@ -181,7 +181,7 @@ end
 
 Our `before(:each)` block begins with a check if our current `example` (the current spec being run) has this `js` flag set to `true`. If it does, this is our signal to use one of our four Selenium drivers. If not, then we can fall back to `:rack_test`.
 
-The assignment conditional to the `driver` variable basically constructs a symbol name which corresponds to the driver we want to use. We check for the presence of a value in the `SELENIUM_HOST` environment variable, and if there is one, we assume we want to connect to a remote Selenium server, so we pick `remote` as the prefix. We can then tack on a `_headless` suffix by default, skipping it if the `DISABLE_HEADLESS` environment variable has a value (not true/false, mind you).
+The conditional assignment to the `driver` variable basically constructs a symbol name which corresponds to the driver we want to use. We check for the presence of a value in the `SELENIUM_HOST` environment variable, and if there is one, we assume we want to connect to a remote Selenium server, so we pick `remote` as the prefix. We can then tack on a `_headless` suffix by default, skipping it if the `DISABLE_HEADLESS` environment variable has a value (not true/false, mind you).
 
 Now that we've generated the name of the driver we want to use, we can pass that to `driven_by`. It's worth noting that `driven_by` is not a Capybara method, but rather a method provided by Rails. We can pass a Capybara driver name to it if we want, though.
 
