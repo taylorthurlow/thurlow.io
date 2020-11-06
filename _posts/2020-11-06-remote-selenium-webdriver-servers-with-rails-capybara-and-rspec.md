@@ -31,7 +31,7 @@ You'll need a few gems, some or all of which you may already have:
 
 If you use Minitest instead of RSpec, things should be largely the same, but you're on your own as far as getting things working. Differences between this guide and the same process for Minitest should be mostly superficial.
 
-## `rails_helper.rb`
+## Configuring the rails_helper
 
 Following the `require "rspec/rails"` statement in `rails_helper.rb`, add the following requires:
 
@@ -51,6 +51,8 @@ Dir[Rails.root.join("spec", "support", "**", "*.rb")].sort.each { |f| require f 
 ```
 
 You can omit the complicated `spec/support` directory require logic, but I find it generally useful. We'll be creating `spec/support/capybara.rb` shortly, so if you don't want to do it the way I did, then make sure you require that file.
+
+## Configuring Capybara
 
 Create `spec/support/capybara.rb`. You can treat this as a sort of an RSpec initializer for Capybara. What follows is the entire contents of the file that you should paste in. I will explain each part afterwards.
 
