@@ -165,6 +165,8 @@ end
 
 The next thing we do is determine the `selenium_app_host` by checking the value of the `SELENIUM_APP_HOST` environment variable, falling back to a little Ruby which obtains the IP address of the machine currently running the code. This is important because our Selenium server needs to know where the Rails app itself is being run - the same server that is running this Ruby code. Typically you won't need to set `SELENIUM_APP_HOST`, but it's there in case the automatic-IP-determining code doesn't work properly. Now that we have the IP/host of the app server, we configure Capybara to use that IP and port 3000.
 
+Now that we've created the drivers, we need to configure RSpec to use the correct driver in the correct scenario. Using the `before(:each)` RSpec hook, we can run some code before each spec example of type `:system`. Specs' types are determined either by the subdirectory they are contained within under the `spec` directory (only when RSpec's `infer_spec_type_from_file_location` option is enabled), or directly in the spec file itself:
+
 ```ruby
 # spec/system/some_example_spec.rb
 
@@ -174,8 +176,6 @@ RSpec.describe "Sign Up", type: :system do
   end
 end
 ```
-
-Now that we've created the drivers, we need to configure RSpec to use the correct driver in the correct scenario. Using the `before(:each)` RSpec hook, we can run some code before each spec example of type `:system`. Specs' types are determined either by the subdirectory they are contained within under the `spec` directory (only when RSpec's `infer_spec_type_from_file_location` option is enabled), or directly in the spec file itself:
 
 System specs fall into two categories: specs that require JavaScript, and those that don't. System specs that require JavaScript are denoted with the `js: true` tag. If your system spec can avoid using JavaScript, then you should do so. System specs that don't require JavaScript are run using the `:rack_test` driver instead of Selenium. The advantage there is that they run *much* faster.
 
