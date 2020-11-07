@@ -200,7 +200,7 @@ config.before(:each, type: :system) do |example|
 end
 ```
 
-Our `before(:each)` block begins with setting the Capybara \`app_host\` configuration value. This happens here due to the fact that Rails is going to reset it to \`127.0.0.1\` before every spec runs, whether we like that or not. We use the configuration values we set before to construct the app host for every Capyara system spec.
+Our `before(:each)` block begins with setting the Capybara `app_host` configuration value. This happens here due to the fact that Rails is going to reset it to `127.0.0.1` before every spec runs, whether we like that or not. We use the configuration values we set before to construct the app host for every Capyara system spec.
 
 Next comes a check if our current `example` (the current spec being run) has this `js` flag set to `true`. If it does, this is our signal to use one of our four Selenium drivers. If not, then we can fall back to `:rack_test`.
 
@@ -210,7 +210,7 @@ Now that we've generated the name of the driver we want to use, we can pass that
 
 ### If you use WebMock
 
-If you use [WebMock](https://github.com/bblimke/webmock) to disable network connections when running tests, you might find that Selenium, Capybara, and Chromedriver really like to connect to each other, and WebMock isn't having any of that. I have a configuration that seems to work as expected, so here is \`capybara.rb\` in its entirety with the WebMock changes added in:
+If you use [WebMock](https://github.com/bblimke/webmock) to disable network connections when running tests, you might find that Selenium, Capybara, and Chromedriver really like to connect to each other, and WebMock isn't having any of that. I have a configuration that seems to work as expected, so here is `capybara.rb` in its entirety with the WebMock changes added in:
 
 ```ruby
 Capybara.register_driver :remote_selenium do |app|
