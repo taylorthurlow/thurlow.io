@@ -1,8 +1,8 @@
 ---
 layout: post
-title:  "OpenSSL & Ruby with Homebrew on macOS"
-date:   2019-12-12 10:46:00 -0800
+title: OpenSSL & Ruby with Homebrew on macOS
 categories: macos
+date: 2019-12-12 10:46:00 -0800
 ---
 Lots of applications used in development utilize OpenSSL, and macOS is shipped with its own build of OpenSSL as a result. Instead of having to deal with the version of OpenSSL shipped with your operating system, it's often much easier to download OpenSSL through Homebrew, and let Apple's version do what it likes, how it likes.
 
@@ -76,6 +76,12 @@ export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl)"
 This option changes how Ruby is built on your machine. If you use a utility like [`ruby-build`](https://github.com/rbenv/ruby-build) (or something like `rbenv` which relies on `ruby-build`), then this is important. By default `ruby-build` will download and build it's own instance of OpenSSL. We want it to use the one we've installed, and this compile option does that. It also makes the Ruby installation process a bit faster.
 
 Because this takes place at the time you install Ruby, this means that you'll need to uninstall and reinstall all versions of Ruby installed on your machine. If you're using `rbenv`, then that would be a `rbenv uninstall 2.6.5 && rbenv install 2.6.5` for every version you have installed.
+
+If you still have issues with OpenSSL and Ruby, also try:
+
+```bash
+export PKG_CONFIG_PATH="$(brew --prefix openssl)/lib/pkgconfig"
+```
 
 ## Installing SSL certificates
 
