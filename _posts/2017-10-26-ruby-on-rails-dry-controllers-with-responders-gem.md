@@ -1,9 +1,11 @@
 ---
 layout: post
-title:  "Ruby on Rails: DRY controllers with responders gem"
-date:   2017-10-26 12:00:00 -0800
+title: "Ruby on Rails: DRY controllers with responders gem"
 categories: ruby
+date: 2017-10-26 12:00:00 -0800
 ---
+**Note (Feb 4, 2021):** Over time I've become increasingly convinced that responders, while decreasing the amount of boilerplate in your controller code, hurt more than they help. Focusing on decreasing the amount of controller code you write in general is a better idea. Rails' magic is excellent most of the time, but there's a reason that Rails removed this concept and extracted it into its own gem. Now that I've given you my own opinion, feel free to act on the contents of this post as you see fit!
+
 Rails' ability to generate scaffolding is nice, but the way the resulting controllers are structured seems to abandon some part of the 'thin controller, fat model' ideology (that said, fat models are still not great). Generating a scaffold for a `User` model gives us a controller which handles action responses in this way:
 
 ~~~~ruby
