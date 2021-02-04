@@ -277,6 +277,7 @@ ALLOWED_WEBMOCK_ADDRESSES = [
   "#{selenium_app_host}:#{Capybara.server_port}",
   "127.0.0.1:9515", # chromedriver
   "localhost:9515", # chromedriver
+  /chromedriver/,
 ]
 
 ALLOWED_WEBMOCK_ADDRESSES << ENV["SELENIUM_HOST"] if ENV["SELENIUM_HOST"].present?
