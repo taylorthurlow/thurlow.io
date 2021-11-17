@@ -4,7 +4,7 @@ title: OpenSSL & Ruby with Homebrew on macOS
 categories: macos
 date: 2019-12-12 10:46:00 -0800
 ---
-> **Updated 2021-11-17:** Fixed some references to the current version of the \`openssl\` Homebrew package, which is now an alias for \`openssl@3\`, not \`openssl@1.1\`. I have not yet tested the content of this article on OpenSSL 3.0 but when I get around to it I will update this article. I don't anticipate anything being broken or incorrect.
+> **Updated 2021-11-17:** Fixed some references to the current version of the `openssl` Homebrew package, which is now an alias for `openssl@3`, not `openssl@1.1`. I have not yet tested the content of this article on OpenSSL 3.0 but when I get around to it I will update this article. I don't anticipate anything being broken or incorrect.
 
 Lots of applications used in development utilize OpenSSL, and macOS is shipped with its own build of OpenSSL as a result. Instead of having to deal with the version of OpenSSL shipped with your operating system, it's often much easier to download OpenSSL through Homebrew, and let Apple's version do what it likes, how it likes.
 
