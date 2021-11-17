@@ -4,11 +4,13 @@ title: OpenSSL & Ruby with Homebrew on macOS
 categories: macos
 date: 2019-12-12 10:46:00 -0800
 ---
+> **Updated 2021-11-17:** Fixed some references to the current version of the `openssl` Homebrew package, which is now an alias for `openssl@3`, not `openssl@1.1`. I have not yet tested the content of this article on OpenSSL 3.0 but when I get around to it I will update this article. I don't anticipate anything being broken or incorrect.
+
 Lots of applications used in development utilize OpenSSL, and macOS is shipped with its own build of OpenSSL as a result. Instead of having to deal with the version of OpenSSL shipped with your operating system, it's often much easier to download OpenSSL through Homebrew, and let Apple's version do what it likes, how it likes.
 
 Using a separate installation of OpenSSL is certainly not without its own share of complications, so this post is a short guide on how to set up OpenSSL through Homebrew. I'll go into some detail in an effort to explain why we're doing what we're doing. We'll also talk about specific issues with Ruby development and OpenSSL, as well as how to install SSL certificates.
 
-At the time of writing, the current version of OpenSSL is `1.1.1d  10 Sep 2019`. You can find this version string by running `openssl version`.
+At the time of writing, the current version of OpenSSL was `1.1.1d  10 Sep 2019`. The current version of OpenSSL is now `3.0.0`. You can find this version string by running `openssl version`.
 
 ## Getting to a clean slate
 
@@ -28,7 +30,7 @@ We're looking for the `openssl` package. If it's in the list, then remove it wit
 brew uninstall --ignore-dependencies openssl
 ```
 
-## Installing OpenSSL 
+## Installing OpenSSL
 
 Next we want to make sure we have the latest Xcode command line tools:
 
@@ -42,7 +44,7 @@ And now we can install OpenSSL again:
 brew install openssl
 ```
 
-It's going to depend on when you're following this guide, but the `openssl` package in Homebrew is likely an [alias](https://en.wikipedia.org/wiki/Aliasing_(computing)) for an OpenSSL package with a specific version number. Currently, `openssl` is an alias for the `openssl@1.1` package. This is totally fine, but you'll need to know what the package name is (it might not be `openssl@1.1` if it's been updated since I wrote this).
+It's going to depend on when you're following this guide, but the `openssl` package in Homebrew is likely an [alias](https://en.wikipedia.org/wiki/Aliasing_(computing)) for an OpenSSL package with a specific version number. At the time of writing, `openssl` was an alias for the `openssl@1.1` package. Currently, it is an alias for `openssl@3`. This is totally fine, but you'll need to know what the package name is (it might not be `openssl@3` if it's been updated since I wrote this).
 
 You can check the real package name with `brew info openssl | head -n 1`. When I run this command, I get:
 
