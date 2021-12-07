@@ -1,0 +1,20 @@
+---
+layout: page
+# This page is used for the main index of galleries
+---
+
+<div class="gallery-index">
+  <div class="gallery-index-grid">
+    {% for gallery in page.galleries %}
+    <div class="gallery-index-grid--cell">
+      <a href="{{ gallery['link'] }}">
+        <img
+          class="gallery-best-image"
+          src="{{ gallery['link'] }}/thumbs/front_{{ gallery['best_image'] }}"
+        />
+        <div class="gallery-index-grid--cell-label">{{ gallery["title"] }}</div>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+</div>
