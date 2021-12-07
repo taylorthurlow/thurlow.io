@@ -36,7 +36,7 @@ galleries:
   # if the gallery is listed it uses specified values except for defaults
   "2021":
     title: "2021"
-    description: Out of all years, 2020 definitly was one of them. I bought my first digital, a Sony a6000, and shortly afterwards, a Nikon F100 film SLR.
+    description: Out of all years, 2021 was definitely one of them. I bought my first digital, a Sony a6000, and shortly afterwards, a Nikon F100 film SLR.
     # hidden: true # don't generate index file - it's still on the web though
     sort_field: timestamp # rule for sorting images within galleries.
     best_image: 38750003.jpg
