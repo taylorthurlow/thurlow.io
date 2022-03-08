@@ -6,8 +6,6 @@ date: 2020-11-05 16:02:22 -08:00
 ---
 **Note (Mar 8, 2022):** Some changes have been made in more recent versions of the Selenium and/or Capybara gems that make certain code in this guide inaccurate, particularly relating to the constructors of the Selenium drivers. The changes are mostly trivial but they mean that this guide cannot be followed to the letter for newer versions of these gems. Some specific information on the changes can be found in [this Upgrade to Selenium 4 help article](https://www.selenium.dev/documentation/webdriver/getting_started/upgrade_to_selenium_4/), which I followed when I fixed my setup during recent gem & Rails upgrades for an application that uses the method outlined in this article. I will update this article as soon as I have time to do so.
 
------
-
 At work, I've been spending some time getting our Rails projects deployed on new Kubernetes infrastructure, and we're taking the opportunity to fix some problems with our current CI pipeline - the biggest of which is a lack of tests. The first app we're deploying is a greenfield (yet to be used in production) Rails app which uses RSpec and includes Rails 5.1/6-style "system specs" which use Capybara to drive a web browser.
 
 Getting JavaScript-enabled system specs working when you run the tests locally isn't too bad - mostly just install a few gems, configure them per their respective READMEs, and off you go. This was the case with this new Rails app, but seeing as we wanted tests to be fully supported in our new CI pipeline, we needed to figure out how to deal with system specs, and by extension, Selenium.
