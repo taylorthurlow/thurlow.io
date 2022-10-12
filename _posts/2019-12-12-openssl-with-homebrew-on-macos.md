@@ -4,7 +4,7 @@ title: OpenSSL & Ruby with Homebrew on macOS
 categories: macos
 date: 2019-12-12 10:46:00 -0800
 ---
-> **Updated 2022:-10-12** T﻿he latest version of `openssl` on Homebrew is `openssl@3`. This version is incompatible with Ruby versions below 3.0. In my testing, Ruby 2.7.2 installed with no errors, but some gem installations failed. `openssl@3` will work as expected for 3.0 and later. For now I would still suggest using `openssl@1.1`.
+> **Updated 2022-10-12** T﻿he latest version of `openssl` on Homebrew is `openssl@3`. This version is incompatible with Ruby versions below 3.0. In my testing, Ruby 2.7.2 installed with no errors, but some gem installations failed. `openssl@3` will work as expected for 3.0 and later. For now I would still suggest using `openssl@1.1`.
 
 Lots of applications used in development utilize OpenSSL, and macOS is shipped with its own build of OpenSSL as a result. Instead of having to deal with the version of OpenSSL shipped with your operating system, it's often much easier to download OpenSSL through Homebrew, and let Apple's version do what it likes, how it likes.
 
