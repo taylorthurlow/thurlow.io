@@ -109,6 +109,7 @@ Once I ensured I had everything pointing to `openssl@1.1`, I was able to install
 
 ## Installing SSL certificates
 
-Because we are now using a separate OpenSSL installation, we can't install certificates through `Keychain Access.app`. Instead, add your certificates to `/usr/local/etc/openssl@3/certs`, substituting `@3` for your version number, as before. Then run `c_rehash` in any terminal. You should see a confirmation message that the aforementioned path was scanned for certificates. This process should add a new symlink to the certs directory, something like `85cf5865.0`. This means the rehash worked properly.
+Because we are now using a separate OpenSSL installation, we can't install certificates through `Keychain Access.app`. Instead, add your certificates to `/opt/homebrew/etc/openssl@3/certs`, substituting `@3` for your version number, as before. Then run `c_rehash` in any terminal. You should see a confirmation message that the aforementioned path was scanned for certificates. This process should add a new symlink to the certs directory, something like `85cf5865.0`. This means the rehash worked properly.
 
 Happy hacking!
+
