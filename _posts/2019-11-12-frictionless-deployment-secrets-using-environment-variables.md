@@ -132,6 +132,4 @@ Using `ENV.fetch` will always return a string - so be sure to convert the result
 
 [`dotenv`](https://github.com/bkeepers/dotenv) can come in handy when in a development environment. Essentially, it loads environment variables from a `.env` file when starting a Rails server (or really any other application or application server, there's bound to be one for your language or application stack of choice). It's worth giving the Github page a read!
 
-<br>
-
 Happy hacking!
