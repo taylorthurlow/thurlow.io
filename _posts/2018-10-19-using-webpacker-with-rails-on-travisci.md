@@ -1,9 +1,13 @@
 ---
 layout: post
-title:  "Using Webpacker with Rails on TravisCI"
-date:   2018-10-19 12:00:00 -0800
-categories: ruby 
+title: Using Webpacker with Rails on TravisCI
+categories: ruby
+date: 2018-10-19 12:00:00 -0800
 ---
+> **Note (Jun 13, 2023):** I'm adding this note here to warn you. The writing has been on the wall for at least a year now, but past here be dragons. Webpacker was a valiant effort at Rails-ifying the monster that is webpack, but it ultimately did not get fleshed out in the way that it needed to be, and things were eventually dropped in support of [cssbundling-rails](https://github.com/rails/cssbundling-rails) and [jsbundling-rails](https://github.com/rails/jsbundling-rails).
+>
+> From a JavaScript perspective, I strongly suggest avoiding webpack unless you know for a fact that you need the extreme level of configurability it offers. Webpacker as a concept should absolutely not be something you spend any time on unless you need to maintain an app that currently relies on it. As someone who generally finds themselves working on primarily server-side-rendered applications with complex but largely superficial JavaScript needs, switching to the aforementioned *bundling-rails gems and `esbuild` has been a fantastic experience.
+
 I recently finished reworking my site's CSS using [Tailwind CSS](https://tailwindcss.com). Everything went smoothly locally - especially cool since I have no prior experience using Webpacker, or even Yarn. Tests were passing with no issues. After pushing my finished changes, TravisCI immediately broke - complaining about something wrong with Webpacker:
 
 ~~~~plain
@@ -53,3 +57,4 @@ script:
 I'm not sure which of these changes fixed my problem, but it's likely the entire `install` section which wasn't there before. I hope this is helpful in getting Webpacker working properly on TravisCI.
 
 Happy hacking!
+
