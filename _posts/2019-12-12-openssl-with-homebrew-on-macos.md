@@ -4,7 +4,7 @@ title: OpenSSL & Ruby with Homebrew on macOS
 categories: macos
 date: 2019-12-12 10:46:00 -0800
 ---
-> **Last updated 2023-02-09:** Added more information on the decision between OpenSSL 1.1 and 3, as well as running on ARM/Apple Silicon (it's as good as they say!).
+**Last updated 2023-02-09:** Added more information on the decision between OpenSSL 1.1 and 3, as well as running on ARM/Apple Silicon (it's as good as they say!).
 
 Lots of applications used in development utilize OpenSSL, and macOS is shipped with its own build of OpenSSL as a result. Instead of having to deal with the version of OpenSSL shipped with your operating system, it's often much easier to download OpenSSL through Homebrew, and let Apple's version do what it likes, how it likes.
 
