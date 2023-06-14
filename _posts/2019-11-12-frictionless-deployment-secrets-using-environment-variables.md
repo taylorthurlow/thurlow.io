@@ -1,9 +1,11 @@
 ---
 layout: post
-title:  "Frictionless deployment secrets using environment variables"
-date:   2019-11-12 22:15:00 -0800
+title: Frictionless deployment secrets using environment variables
 categories: ruby
+date: 2019-11-12 22:15:00 -0800
 ---
+**Note (Jun 13, 2023):** After a number of years playing with different configuration management methodologies, I've largely settled on the idea that YAML kinda sucks in a lot of ways, and this solution does nothing to help with that. Take the contents of this article as you will, as everything regarding environment variables really still rings true, but I would focus primarily on my final suggestion to check out [`dotenv`](https://github.com/bkeepers/dotenv). There are libraries for the vast majority of languages and platforms out there, usually with the same name, that achieve largely the same result. How you ingest these environment variables into your application, though, I will leave as an exercise to the reader.
+
 At work I find myself in a position which I'm sure many people find themselves in - as a developer, I'd rather configure my Ruby and Rails applications using the typical YAML file. Here's a database configuration, for example:
 
 ```yaml
