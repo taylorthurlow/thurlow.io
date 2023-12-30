@@ -145,9 +145,9 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  jekyll (~> 4.3.2)
-  jekyll-feed (~> 0.12)
-  minima (~> 2.5)
+  jekyll
+  jekyll-feed
+  minima
   solargraph
   standard
 
