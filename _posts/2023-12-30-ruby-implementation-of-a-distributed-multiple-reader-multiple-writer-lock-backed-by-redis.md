@@ -1,8 +1,7 @@
 ---
 layout: post
-title: Ruby implementation of a distributed, multiple-reader,
-  multiple-writer   lock, backed by Redis
-categories: ruby, redis
+title: Distributed, multi-reader, multi-writer lock, with Redis & Ruby
+categories: ruby redis concurrency
 date: 2023-12-30 14:03:31 -08:00
 ---
 I am in the middle of a work project which requires a distributed (multi-host) locking mechanism which supports multiple readers and multiple writers. In this case I am not literally reading and writing a specific piece of data, but rather I am in a situation where a front-end reads and writes data to an authoritative back-end system that generally "stays the same", but semi-regularly undergoes changes (think CMS-level changes) that have the potential to fundamentally change the content the front-end accesses and manipulates, or the validity of the stuff the front-end has already done.
