@@ -18,18 +18,18 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: thurlow.io
+title: taylorthurlow.net
 author: Taylor Thurlow
 email: thurlow@hey.com
 description: >- # this means to ignore newlines until "baseurl:"
   Hi, I'm Taylor Thurlow. I'm a software engineer and Rubyist from California.
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "https://thurlow.io" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://taylorthurlow.net" # the base hostname & protocol for your site, e.g. http://example.com
 github_username: taylorthurlow
 linkedin_username: taylorjthurlow
 
 # RSS feed
-name: thurlow.io
+name: taylorthurlow.net
 feed_items: 10
 feed_update_period: daily
 feed_update_frequency: 1
